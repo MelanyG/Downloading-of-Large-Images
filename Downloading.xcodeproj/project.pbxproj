@@ -15,6 +15,9 @@
 		3637A4481CA67507007B90D1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3637A4461CA67507007B90D1 /* LaunchScreen.storyboard */; };
 		3637A4531CA67507007B90D1 /* DownloadingTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3637A4521CA67507007B90D1 /* DownloadingTests.m */; };
 		3637A45E1CA67507007B90D1 /* DownloadingUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3637A45D1CA67507007B90D1 /* DownloadingUITests.m */; };
+		3637A46D1CA68BCF007B90D1 /* ContentTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3637A46C1CA68BCF007B90D1 /* ContentTableView.m */; };
+		3637A4701CA68EC7007B90D1 /* CustomTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3637A46F1CA68EC7007B90D1 /* CustomTableViewCell.m */; };
+		3637A4731CA6A91F007B90D1 /* ObjectForTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3637A4721CA6A91F007B90D1 /* ObjectForTableCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +54,13 @@
 		3637A4591CA67507007B90D1 /* DownloadingUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DownloadingUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3637A45D1CA67507007B90D1 /* DownloadingUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DownloadingUITests.m; sourceTree = "<group>"; };
 		3637A45F1CA67507007B90D1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3637A46B1CA68BCF007B90D1 /* ContentTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContentTableView.h; sourceTree = "<group>"; };
+		3637A46C1CA68BCF007B90D1 /* ContentTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContentTableView.m; sourceTree = "<group>"; };
+		3637A46E1CA68EC7007B90D1 /* CustomTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomTableViewCell.h; sourceTree = "<group>"; };
+		3637A46F1CA68EC7007B90D1 /* CustomTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomTableViewCell.m; sourceTree = "<group>"; };
+		3637A4711CA6A91F007B90D1 /* ObjectForTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjectForTableCell.h; sourceTree = "<group>"; };
+		3637A4721CA6A91F007B90D1 /* ObjectForTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ObjectForTableCell.m; sourceTree = "<group>"; };
+		3637A4741CA6C326007B90D1 /* Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Protocol.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,6 +91,13 @@
 		3637A42C1CA67507007B90D1 = {
 			isa = PBXGroup;
 			children = (
+				3637A4741CA6C326007B90D1 /* Protocol.h */,
+				3637A4711CA6A91F007B90D1 /* ObjectForTableCell.h */,
+				3637A4721CA6A91F007B90D1 /* ObjectForTableCell.m */,
+				3637A46E1CA68EC7007B90D1 /* CustomTableViewCell.h */,
+				3637A46F1CA68EC7007B90D1 /* CustomTableViewCell.m */,
+				3637A46B1CA68BCF007B90D1 /* ContentTableView.h */,
+				3637A46C1CA68BCF007B90D1 /* ContentTableView.m */,
 				3637A4371CA67507007B90D1 /* Downloading */,
 				3637A4511CA67507007B90D1 /* DownloadingTests */,
 				3637A45C1CA67507007B90D1 /* DownloadingUITests */,
@@ -273,6 +290,9 @@
 				3637A4401CA67507007B90D1 /* ViewController.m in Sources */,
 				3637A43D1CA67507007B90D1 /* AppDelegate.m in Sources */,
 				3637A43A1CA67507007B90D1 /* main.m in Sources */,
+				3637A4731CA6A91F007B90D1 /* ObjectForTableCell.m in Sources */,
+				3637A4701CA68EC7007B90D1 /* CustomTableViewCell.m in Sources */,
+				3637A46D1CA68BCF007B90D1 /* ContentTableView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

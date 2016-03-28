@@ -21,5 +21,6 @@
 
 - (void)didClickStartAtIndex:(NSInteger)cellIndex withData:(id)data;
 
+- (void)didClickStopAtIndex:(NSInteger)cellIndex withData:(id)data;
 
 @end

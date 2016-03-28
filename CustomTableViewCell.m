@@ -23,15 +23,31 @@
 
 - (IBAction)buttonClicked:(UIButton *)sender;
 {
-    if (self.delegate && [self.delegate respondsToSelector:@selector(didClickStartAtIndex:withData:)]) {
-        [self.delegate didClickStartAtIndex:_cellIndex withData:self];
+
+    if (self.delegate && [self.delegate respondsToSelector:@selector(didClickStartAtIndex:withData:)])
+    {
+        [self.delegate didClickStartAtIndex:self.cellIndex withData:self];
+      
     }
+
+
 }
 
-
+//-(void)prepareForReuse
+//{
+//    [super prepareForReuse];
+//    
+//    self.progressView.progress = 0.1;
+//    self.realProgressStatus.text = @"";
+//    self.image.image = [UIImage imageNamed:@"placeholder"];
+//}
 
 - (IBAction)stopDownloading:(UIButton *)sender
 {
-    
+    if (self.delegate && [self.delegate respondsToSelector:@selector(didClickStopAtIndex:withData:)])
+    {
+        [self.delegate didClickStopAtIndex:self.cellIndex withData:self];
+    }
+
 }
 @end

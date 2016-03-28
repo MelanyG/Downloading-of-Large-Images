@@ -13,8 +13,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-//self.imageView = [[UIImageView alloc] initWithImage:self.myTemporaryImage];
-    //self.imageView.image = self.imageView.image;
+    
     [self.imageView setImage:self.myTemporaryImage];
 }
 

@@ -29,17 +29,6 @@
                                                 <constraint firstAttribute="height" constant="150" id="pI1-hW-IAh"/>
                                             </constraints>
                                         </imageView>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2fo-1H-L4o">
-                                            <rect key="frame" x="17" y="94" width="91" height="30"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" constant="91" id="9Aa-Zr-iNm"/>
-                                                <constraint firstAttribute="height" constant="30" id="cFE-de-UNr"/>
-                                            </constraints>
-                                            <state key="normal" title="Start "/>
-                                            <connections>
-                                                <action selector="buttonClicked:" destination="fWr-9I-szM" eventType="touchUpInside" id="ikO-8n-UdX"/>
-                                            </connections>
-                                        </button>
                                         <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progressViewStyle="bar" progress="0.10000000000000001" translatesAutoresizingMaskIntoConstraints="NO" id="9S6-x7-1fK">
                                             <rect key="frame" x="17" y="129" width="179" height="3"/>
                                             <constraints>
@@ -63,7 +52,9 @@
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="30" id="MFV-yh-anI"/>
                                             </constraints>
-                                            <state key="normal" title="Stop"/>
+                                            <state key="normal" title="Stop">
+                                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            </state>
                                             <connections>
                                                 <action selector="stopDownloading:" destination="fWr-9I-szM" eventType="touchUpInside" id="VjD-WH-qVB"/>
                                             </connections>
@@ -77,6 +68,19 @@
                                             <color key="textColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2fo-1H-L4o">
+                                            <rect key="frame" x="17" y="94" width="91" height="30"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="91" id="9Aa-Zr-iNm"/>
+                                                <constraint firstAttribute="height" constant="30" id="cFE-de-UNr"/>
+                                            </constraints>
+                                            <state key="normal" title="Start">
+                                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="buttonClicked:" destination="fWr-9I-szM" eventType="touchUpInside" id="ikO-8n-UdX"/>
+                                            </connections>
+                                        </button>
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="TYa-eF-pOQ" firstAttribute="top" secondItem="yc4-gT-r2a" secondAttribute="bottom" constant="8" id="87N-um-aNh"/>
@@ -101,7 +105,9 @@
                                     <outlet property="progressView" destination="9S6-x7-1fK" id="Gqs-tm-1as"/>
                                     <outlet property="realProgressStatus" destination="eEe-pL-BBg" id="goR-9A-xf2"/>
                                     <outlet property="start" destination="2fo-1H-L4o" id="DZg-nD-BcC"/>
+                                    <outlet property="startButton" destination="2fo-1H-L4o" id="LOb-7e-gJE"/>
                                     <outlet property="stop" destination="TYa-eF-pOQ" id="3iE-Jb-Xnj"/>
+                                    <outlet property="stopButton" destination="TYa-eF-pOQ" id="O3X-0D-vzs"/>
                                     <segue destination="PC8-hh-uY7" kind="showDetail" identifier="ImageVC" action="showViewController:sender:" id="s5X-3n-Imd"/>
                                 </connections>
                             </tableViewCell>

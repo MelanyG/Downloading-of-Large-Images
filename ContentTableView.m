@@ -10,6 +10,7 @@
 #import "ObjectForTableCell.h"
 #import "ImageViewController.h"
 
+#define myAsyncQueue dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
 
 @interface ContentTableView ()
 
@@ -25,6 +26,7 @@
 @property (nonatomic) NSUInteger totalBytes;
 @property (nonatomic) NSUInteger receivedBytes;
 
+
 @end
 
 @implementation ContentTableView
@@ -32,7 +34,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
     
     self.dataDictionary = [[NSMutableDictionary alloc]init];
     self.savedImages = [[NSMutableDictionary alloc]init];
@@ -70,6 +71,7 @@
         [self.dataDictionary setObject:tmp forKey:self.names[i]];
     }
 }
+
 
 #pragma mark - Delegate Methods
 
@@ -112,25 +114,35 @@
 
 -(void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
-    //dispatch_async(dispatch_get_main_queue(), ^{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
+        self.customCell.realProgressStatus.text = @"Downloaded";
+        
+        UIImage *img = [UIImage imageWithData:self.imageData];
+        self.customCell.image.image = img;
+        self.customCell.tag = self.selectedCell;
+        [self.savedImages setObject:img forKey:self.customCell.nameOfImage.text];
+        NSNumber *myNum = [NSNumber numberWithInteger:self.selectedCell];
+        [self.tagsOfCells addObject:myNum];
+    });
     
-    self.customCell.realProgressStatus.text = @"Downloaded";
-    
-    UIImage *img = [UIImage imageWithData:self.imageData];
-    self.customCell.image.image = img;
-    self.customCell.tag = self.selectedCell;
-    [self.savedImages setObject:img forKey:self.customCell.nameOfImage.text];
-    NSNumber *myNum = [NSNumber numberWithInteger:self.selectedCell];
-    [self.tagsOfCells addObject:myNum];
-    //});
-    //    NSData *imgData = UIImageJPEGRepresentation(img, 1.0);
-    //    NSLog(@"Size of Image(megabytes):%lu",(unsigned long)[imgData length]/1048576);
     
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     
+}
+
+#pragma mark - Navigation with Segue
+
+-(void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.identifier isEqualToString:@"ImageVC"])
+    {
+        ImageViewController * ivc = segue.destinationViewController;
+        ivc.myTemporaryImage = [self.savedImages objectForKey:self.names[self.selectedCell]];;
+    }
 }
 
 #pragma mark - Table view data source
@@ -145,14 +157,7 @@
     return [self.names count];
 }
 
--(void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    if ([segue.identifier isEqualToString:@"ImageVC"])
-    {
-        ImageViewController * ivc = segue.destinationViewController;
-        ivc.myTemporaryImage = [self.savedImages objectForKey:self.names[self.selectedCell]];;
-    }
-}
+
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -170,18 +175,20 @@
     
     if (![self.tagsOfCells containsObject:myNum])
     {
-        NSLog(@"Row: %ld",(long)indexPath.row);
+        
         UIImage *img = [UIImage imageNamed:@"placeholder"];
         customCell.realProgressStatus.text = @"";
         customCell.progressView.progress = 0.1;
         customCell.image.image = img;
         [customCell setNeedsLayout];
+        customCell.startButton.enabled = YES;
     }
     else
     {
         customCell.image.image = [self.savedImages objectForKey:self.names[indexPath.row]];
         customCell.realProgressStatus.text = @"Downloaded";
         customCell.progressView.progress = 1;
+        customCell.startButton.enabled = NO;
     }
     
     customCell.delegate = self;
@@ -222,6 +229,7 @@
 
 - (void)didClickStartAtIndex:(NSInteger)cellIndex withData:(CustomTableViewCell*)data
 {
+    // dispatch_async(myAsyncQueue, ^{
     self.customCell = data;
     self.selectedCell = cellIndex;
     ObjectForTableCell* tmp =[self.dataDictionary objectForKey:self.names[cellIndex]];
@@ -231,7 +239,7 @@
                                                 cachePolicy:NSURLRequestReloadIgnoringLocalCacheData
                                             timeoutInterval:60.0];
     self.connectionManager = [[NSURLConnection alloc] initWithRequest:urlRequest delegate:self];
-    
+    // });
 }
 
 - (void)didClickStopAtIndex:(NSInteger)cellIndex withData:(id)data

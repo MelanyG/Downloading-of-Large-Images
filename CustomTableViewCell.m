@@ -29,18 +29,10 @@
         [self.delegate didClickStartAtIndex:self.cellIndex withData:self];
       
     }
-
+    self.startButton.enabled = NO;
 
 }
 
-//-(void)prepareForReuse
-//{
-//    [super prepareForReuse];
-//    
-//    self.progressView.progress = 0.1;
-//    self.realProgressStatus.text = @"";
-//    self.image.image = [UIImage imageNamed:@"placeholder"];
-//}
 
 - (IBAction)stopDownloading:(UIButton *)sender
 {
@@ -48,6 +40,6 @@
     {
         [self.delegate didClickStopAtIndex:self.cellIndex withData:self];
     }
-
+ self.startButton.enabled = YES;
 }
 @end

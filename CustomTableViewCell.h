@@ -18,7 +18,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *stop;
 @property (weak, nonatomic) IBOutlet UIProgressView *progressView;
 @property (weak, nonatomic) IBOutlet UILabel *realProgressStatus;
-
+@property (weak, nonatomic) IBOutlet UIButton *startButton;
+@property (weak, nonatomic) IBOutlet UIButton *stopButton;
 
 @property (weak, nonatomic) id<CellDelegate>delegate;
 @property (assign, nonatomic) NSInteger cellIndex;

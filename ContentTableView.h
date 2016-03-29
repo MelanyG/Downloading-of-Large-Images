@@ -9,9 +9,10 @@
 #import <UIKit/UIKit.h>
 #import "CustomTableViewCell.h"
 #import "Protocol.h"
+#import "MyOperationQueue.h"
 
-@interface ContentTableView : UITableViewController<CellDelegate, NSURLConnectionDataDelegate, NSURLSessionTaskDelegate>
+@interface ContentTableView : UITableViewController<CellDelegate, NSURLSessionDataDelegate, NSURLSessionDelegate, NSURLSessionTaskDelegate>
 
-- (void)asynchLoad:(NSString *)urlString forIndexPath:(NSInteger)indexPath;
+
 
 @end

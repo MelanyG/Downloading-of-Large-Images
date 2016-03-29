@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		36349BD71CAAB0A100D99751 /* MyOperationQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 36349BD61CAAB0A100D99751 /* MyOperationQueue.m */; };
 		3637A43A1CA67507007B90D1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3637A4391CA67507007B90D1 /* main.m */; };
 		3637A43D1CA67507007B90D1 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3637A43C1CA67507007B90D1 /* AppDelegate.m */; };
 		3637A4401CA67507007B90D1 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3637A43F1CA67507007B90D1 /* ViewController.m */; };
@@ -39,6 +40,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		36349BD51CAAB0A100D99751 /* MyOperationQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyOperationQueue.h; sourceTree = "<group>"; };
+		36349BD61CAAB0A100D99751 /* MyOperationQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyOperationQueue.m; sourceTree = "<group>"; };
 		3637A4351CA67507007B90D1 /* Downloading.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Downloading.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3637A4391CA67507007B90D1 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		3637A43B1CA67507007B90D1 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -94,6 +97,8 @@
 		3637A42C1CA67507007B90D1 = {
 			isa = PBXGroup;
 			children = (
+				36349BD51CAAB0A100D99751 /* MyOperationQueue.h */,
+				36349BD61CAAB0A100D99751 /* MyOperationQueue.m */,
 				3637A4781CA7475B007B90D1 /* ImageViewController.h */,
 				3637A4791CA7475B007B90D1 /* ImageViewController.m */,
 				3637A4741CA6C326007B90D1 /* Protocol.h */,
@@ -293,6 +298,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3637A4401CA67507007B90D1 /* ViewController.m in Sources */,
+				36349BD71CAAB0A100D99751 /* MyOperationQueue.m in Sources */,
 				3637A43D1CA67507007B90D1 /* AppDelegate.m in Sources */,
 				3637A43A1CA67507007B90D1 /* main.m in Sources */,
 				3637A4731CA6A91F007B90D1 /* ObjectForTableCell.m in Sources */,
@@ -524,6 +530,7 @@
 				3637A4641CA67507007B90D1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		3637A4651CA67507007B90D1 /* Build configuration list for PBXNativeTarget "DownloadingTests" */ = {
 			isa = XCConfigurationList;
@@ -532,6 +539,7 @@
 				3637A4671CA67507007B90D1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		3637A4681CA67507007B90D1 /* Build configuration list for PBXNativeTarget "DownloadingUITests" */ = {
 			isa = XCConfigurationList;
@@ -540,6 +548,7 @@
 				3637A46A1CA67507007B90D1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

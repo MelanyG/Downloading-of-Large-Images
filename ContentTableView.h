@@ -10,6 +10,8 @@
 #import "CustomTableViewCell.h"
 #import "Protocol.h"
 
-@interface ContentTableView : UITableViewController<CellDelegate, NSURLConnectionDataDelegate>
+@interface ContentTableView : UITableViewController<CellDelegate, NSURLConnectionDataDelegate, NSURLSessionTaskDelegate>
+
+- (void)asynchLoad:(NSString *)urlString forIndexPath:(NSInteger)indexPath;
 
 @end

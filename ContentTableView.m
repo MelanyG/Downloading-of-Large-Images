@@ -248,35 +248,24 @@ didReceiveResponse:(NSURLResponse *)response
     self.customCell = data;
     self.selectedCell = cellIndex;
     ObjectForTableCell* tmp =[self.dataDictionary objectForKey:self.names[cellIndex]];
-    NSURLRequest *urlRequest = [NSURLRequest requestWithURL:[NSURL URLWithString:tmp.imeageURL]];
-    NSURLSessionDataTask *task = [self.session dataTaskWithRequest:urlRequest];
+//    NSURLRequest *urlRequest = [NSURLRequest requestWithURL:[NSURL URLWithString:tmp.imeageURL]];
+//    NSURLSessionDataTask *task = [self.session dataTaskWithRequest:urlRequest];
 
 //
 //                                                cachePolicy:NSURLRequestReloadIgnoringLocalCacheData
 //                                            timeoutInterval:60.0];
 //    self.connectionManager = [[NSURLConnection alloc] initWithRequest:urlRequest delegate:self];
 //    });
-//[self asynchLoad:nil forIndexPath:cellIndex];
+[self asynchLoad:nil forIndexPath:cellIndex];
     
 //    
 //    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:tmp.imeageURL]];
 //    
 //    NSURLSessionDownloadTask *task = [self.session downloadTaskWithRequest:request];
 //    //[self imageUrl:tmp.imeageURL];
-   [task resume];
+  // [task resume];
 }
-//- (void)URLSession:(NSURLSession *)session
-//              task:(NSURLSessionTask *)task
-//   didSendBodyData:(int64_t)bytesSent
-//    totalBytesSent:(int64_t)totalBytesSent
-//totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend
-//{
-//    dispatch_async(dispatch_get_main_queue(), ^{
-//        [_progress setProgress:
-//         (double)totalBytesSent /
-//         (double)totalBytesExpectedToSend animated:YES];
-//    });
-//}
+
 - (void)URLSession:(NSURLSession *)session
           dataTask:(NSURLSessionDataTask *)dataTask
     didReceiveData:(NSData *)data
@@ -517,7 +506,7 @@ totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
 //                                NSURLResponse *response,
 //                                NSError *error)
    //NSURLSession * session;
-    NSURLSessionTask *task = [self.session dataTaskWithRequest:urlRequest ];
+//    NSURLSessionTask *task = [self.session dataTaskWithRequest:urlRequest
 //               completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
 //                   if (!error)
 //                   {
@@ -553,46 +542,39 @@ totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
 //                       //            }
 //                   }
 //               }];
-
+//
     //NSURLSessionDataTask * dataTask = [defaultSession :url
                                        
-    [task resume];
-//    
-//    [NSURLConnection sendAsynchronousRequest:urlRequest queue:[NSOperationQueue currentQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-//        if (!error)
-//        {
-//            self.customCell.progressView.progress = ((100.0/response.expectedContentLength)*data.length)/100;
-//            NSLog(@"%d", a);
-//            a++;
-//            float per = ((100.0/response.expectedContentLength)*data.length);
-//            self.customCell.realProgressStatus.text = [NSString stringWithFormat:@"%0.f%%", per];            // create the image
-//            UIImage *img = [UIImage imageWithData:data];
-//            
+ //   [task resume];
 //
-//            dispatch_async(dispatch_get_main_queue(), ^{
-//                
-//                self.customCell.realProgressStatus.text = @"Downloaded";
-//                
-//                //UIImage *img = [UIImage imageWithData:self.imageData];
-//                self.customCell.image.image = img;
-//                self.customCell.tag = indexPath;
-//                [self.savedImages setObject:img forKey:self.names[indexPath]];
-//                NSNumber *myNum = [NSNumber numberWithInteger:indexPath];
-//                [self.tagsOfCells addObject:myNum];
-//            });
-//            // important part - we make no assumption about the state of the table at this point
-//            // find out if our original index path is visible, then update it, taking
-//            // advantage of the cached image (and a bonus option row animation)
-//            
-////            NSArray *visiblePaths = [self.tableView indexPathsForVisibleRows];
-////            if ([visiblePaths containsObject:indexPath])
-////            {
-////                NSArray *indexPaths = [NSArray arrayWithObject:indexPath];
-////                [self.tableView reloadRowsAtIndexPaths:indexPaths withRowAnimation: UITableViewRowAnimationFade];
-////                // because we cached the image, cellForRow... will see it and run fast
-////            }
-//        }
-//    }];
+    [NSURLConnection sendAsynchronousRequest:urlRequest queue:[NSOperationQueue currentQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+        if (!error)
+        {
+            self.customCell.progressView.progress = ((100.0/response.expectedContentLength)*data.length)/100;
+            NSLog(@"%d", a);
+            a++;
+            float per = ((100.0/response.expectedContentLength)*data.length);
+            self.customCell.realProgressStatus.text = [NSString stringWithFormat:@"%0.f%%", per];            // create the image
+            UIImage *img = [UIImage imageWithData:data];
+            
+
+            dispatch_async(dispatch_get_main_queue(), ^{
+                
+                self.customCell.realProgressStatus.text = @"Downloaded";
+                
+                //UIImage *img = [UIImage imageWithData:self.imageData];
+                self.customCell.image.image = img;
+                self.customCell.tag = indexPath;
+                
+               
+                
+                [self.tableView reloadData];
+            });
+            [self.savedImages setObject:img forKey:self.names[indexPath]];
+             NSNumber *myNum = [NSNumber numberWithInteger:indexPath];
+[self.tagsOfCells addObject:myNum];
+        }
+    }];
 }
 - (void)didClickStopAtIndex:(NSInteger)cellIndex withData:(id)data
 {
@@ -601,5 +583,18 @@ totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
     
     
 }
+
+//- (void)URLSession:(NSURLSession *)session
+//              task:(NSURLSessionTask *)task
+//   didSendBodyData:(int64_t)bytesSent
+//    totalBytesSent:(int64_t)totalBytesSent
+//totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend
+//{
+//    dispatch_async(dispatch_get_main_queue(), ^{
+//        [_progress setProgress:
+//         (double)totalBytesSent /
+//         (double)totalBytesExpectedToSend animated:YES];
+//    });
+//}
 
 @end

@@ -7,44 +7,54 @@
 //
 
 #import "ContentTableView.h"
-#import "ObjectForTableCell.h"
-#import "ImageViewController.h"
 
-#define myAsyncQueue dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
+
+//#define myAsyncQueue dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
 
 @interface ContentTableView ()
 
-@property(strong, nonatomic) NSMutableDictionary* dataDictionary;
-@property(strong, nonatomic) NSMutableArray* names;
+
 @property(strong, nonatomic) CustomTableViewCell *customCell;
-@property (strong, nonatomic) NSURLConnection *connectionManager;
+//@property (strong, nonatomic) NSURLConnection *connectionManager;
 @property (strong, nonatomic) NSURLResponse *urlResponse;
 @property(nonatomic, strong) NSMutableData *imageData;
-@property(strong, nonatomic) NSMutableDictionary* savedImages;
+//@property(strong, nonatomic) NSMutableDictionary* savedImages;
 @property(assign, nonatomic) NSInteger selectedCell;
-@property(strong, nonatomic) NSMutableSet* tagsOfCells;
-@property (nonatomic) NSUInteger totalBytes;
-@property (nonatomic) NSUInteger receivedBytes;
+@property (strong, nonatomic) NSURLSessionDownloadTask* downloadTask;
 
-@property (nonatomic, copy) void (^backgroundSessionCompletionHandler)(void);
-@property (nonatomic, strong) NSURLSession *session;
-@property (nonatomic, strong) NSURLSessionUploadTask *uploadTask;
+@property (assign, nonatomic) NSUInteger totalBytes;
+//@property (nonatomic) NSUInteger receivedBytes;
+
+//@property (nonatomic, copy) void (^backgroundSessionCompletionHandler)(void);
+//@property (nonatomic, strong) NSURLSession *session;
+//@property (nonatomic, strong) NSURLSessionUploadTask *uploadTask;
 @property (nonatomic) float downloadSize;
-@property (nonatomic, strong) MyOperationQueue* one;
+//@property (nonatomic, strong) MyOperationQueue* one;
 @property (nonatomic, strong) NSOperationQueue* queue;
 @end
 
 @implementation ContentTableView
+
++ (instancetype)sharedManager
+{
+    static ContentTableView *instance = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        instance = [[ContentTableView alloc] init];
+    });
+    return instance;
+}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     //NSURLSessionConfiguration *defaultConfigObject = [NSURLSessionConfiguration defaultSessionConfiguration];
     
-     self.queue = [[NSOperationQueue alloc] init];
-    
+    self.queue = [[NSOperationQueue alloc] init];
+    self.queue.name = @"Background Queue";
+    [self.queue setMaxConcurrentOperationCount:4];
     self.dataDictionary = [[NSMutableDictionary alloc]init];
-    self.savedImages = [[NSMutableDictionary alloc]init];
+    //self.savedImages = [[NSMutableDictionary alloc]init];
     self.tagsOfCells = [[NSMutableSet alloc]init];
     self.names = [[NSMutableArray alloc]initWithObjects:@"Snow Tiger", @"Elephant", @"Sunset",@"Nature silence",@"Tree",@"White tiger",@"Waterfall",@"Owl",@"Fairytail",@"End of space",@"House", @"Beautiful Nature",@"Green Waterfall", @"Wooden road", @"Beach", @"Color nature", @"Autumn nature", @"New year", @"Christmas tree", @"Christmas", nil];
     NSArray* urlNames = [[NSArray alloc]initWithObjects:
@@ -87,7 +97,7 @@
     if ([segue.identifier isEqualToString:@"ImageVC"])
     {
         ImageViewController * ivc = segue.destinationViewController;
-        ivc.myTemporaryImage = [self.savedImages objectForKey:self.names[self.selectedCell]];;
+        ivc.myTemporaryImage = [[self.dataDictionary objectForKey:self.names[self.selectedCell]] downloadedImage];
     }
 }
 
@@ -131,7 +141,7 @@
     }
     else
     {
-        customCell.image.image = [self.savedImages objectForKey:self.names[indexPath.row]];
+        customCell.image.image = [[self.dataDictionary objectForKey:self.names[indexPath.row]] downloadedImage];
         customCell.realProgressStatus.text = @"Downloaded";
         customCell.progressView.progress = 1;
         customCell.startButton.enabled = NO;
@@ -154,7 +164,7 @@
 -(NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     self.selectedCell = indexPath.row;
-    if ([self.savedImages objectForKey:self.names[self.selectedCell]])
+    if ([[self.dataDictionary objectForKey:self.names[self.selectedCell]]downloadedImage])
     {
         [self performSegueWithIdentifier:@"ImageVC" sender: indexPath];
         return nil;
@@ -179,26 +189,32 @@
     self.customCell = data;
     self.selectedCell = cellIndex;
     ObjectForTableCell* tmp =[self.dataDictionary objectForKey:self.names[cellIndex]];
-//    NSURLSessionConfiguration *defaultConfigObject = [NSURLSessionConfiguration defaultSessionConfiguration];
-//    NSURLSession *defaultSession = [NSURLSession sessionWithConfiguration: defaultConfigObject delegate: self delegateQueue: [NSOperationQueue currentQueue]];
-    NSURLSession *defaultSession;
+    //    NSURLSessionConfiguration *defaultConfigObject = [NSURLSessionConfiguration defaultSessionConfiguration];
+    //    NSURLSession *defaultSession = [NSURLSession sessionWithConfiguration: defaultConfigObject delegate: self delegateQueue: [NSOperationQueue currentQueue]];
+   NSURLSession *defaultSession;
     defaultSession = [self configureSession];
     NSURL *url = [NSURL URLWithString: tmp.imeageURL];
- 
+   // MyOperationQueue * one = [[MyOperationQueue alloc]initWithURL:url andRaw:self.selectedCell];
+//[self.queue addOperation:one];
     NSURLSessionDownloadTask *task = [defaultSession downloadTaskWithURL:url];
     [task resume];
-
-
-
+    
+    
+    
 }
 - (NSURLSession *) configureSession
 {
     NSURLSessionConfiguration *config =
-    [NSURLSessionConfiguration backgroundSessionConfigurationWithIdentifier:@"com.melany.backgroundDownload"];
+    [NSURLSessionConfiguration backgroundSessionConfigurationWithIdentifier:@"com.my.backgroundDownload"];
     config.allowsCellularAccess = NO;
-    MyOperationQueue * one = [[MyOperationQueue alloc]init];
-    NSURLSession *session = [NSURLSession sessionWithConfiguration:config delegate:self delegateQueue: one];
-    [self.queue addOperation:one];
+        ObjectForTableCell* tmp =[self.dataDictionary objectForKey:self.names[self.selectedCell]];
+    NSURL *url = [NSURL URLWithString: tmp.imeageURL];
+    MyOperationQueue * one = [[MyOperationQueue alloc]initWithURL:url andRaw:self.selectedCell];
+    //one.cancelled = YES;
+    one.name = @"One queue";
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:config delegate:self delegateQueue:[NSOperationQueue mainQueue]];
+    //[self.queue addOperation:one];
+    //[[self.dataDictionary objectForKey:self.names[self.selectedCell]] setCurrentQueue:one];
     return session;
 }
 
@@ -208,23 +224,31 @@
 totalBytesWritten:(int64_t)totalBytesWritten
 totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
 {
-    float progress = (float) (totalBytesWritten/1024) / (float) (totalBytesExpectedToWrite/1024);
-
-    self.customCell.progressView.progress = progress;
-    self.customCell.realProgressStatus.text = [NSString stringWithFormat:@"%0.f%%", progress*100];
-   // NSLog(@"downloaded %d%%", (int)(100.0*prog));
-    
+    self.downloadTask =downloadTask;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        float progress = (float) (totalBytesWritten/1024) / (float) (totalBytesExpectedToWrite/1024);
+        
+        self.customCell.progressView.progress = progress;
+        self.customCell.realProgressStatus.text = [NSString stringWithFormat:@"%0.f%%", progress*100];
+        // NSLog(@"downloaded %d%%", (int)(100.0*prog));
+    });
 }
 
--(void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didResumeAtOffset:(int64_t)fileOffset expectedTotalBytes:(int64_t)expectedTotalBytes
+-(void)URLSession:(NSURLSession *)session
+     downloadTask:(NSURLSessionDownloadTask *)downloadTask
+didResumeAtOffset:(int64_t)fileOffset
+expectedTotalBytes:(int64_t)expectedTotalBytes
 {
-
+    
 }
 
 -(void)URLSession:(NSURLSession *)session
      downloadTask:(NSURLSessionDownloadTask *)downloadTask
 didFinishDownloadingToURL:(NSURL *)location
 {
+      NSLog(@"didFinishDownloadingToURL - Table View");
+    self.downloadTask = downloadTask;
+    
     NSData *d = [NSData dataWithContentsOfURL:location];
     UIImage *im = [UIImage imageWithData:d];
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -232,23 +256,21 @@ didFinishDownloadingToURL:(NSURL *)location
         self.customCell.realProgressStatus.text = @"Downloaded";
         [self.tableView reloadData];
     });
-    [self.savedImages setObject:im forKey:self.customCell.nameOfImage.text];
+    [[self.dataDictionary objectForKey:self.names[self.selectedCell]] setDownloadedImage:im];
+    //[self.savedImages setObject:im forKey:self.customCell.nameOfImage.text];
     NSNumber *myNum = [NSNumber numberWithInteger:self.selectedCell];
     [self.tagsOfCells addObject:myNum];
 }
 
 
-
-
-
-
-
 - (void)URLSession:(NSURLSession *)session
           dataTask:(NSURLSessionDataTask *)dataTask
 didReceiveResponse:(NSURLResponse *)response
- completionHandler:(void (^)(NSURLSessionResponseDisposition disposition))completionHandler {
+ completionHandler:(void (^)(NSURLSessionResponseDisposition disposition))completionHandler
+{
     completionHandler(NSURLSessionResponseAllow);
     
+    NSLog(@"didReceiveResponse in table view");
     self.customCell.progressView.progress = 0.0f;
     self.downloadSize = [response expectedContentLength];
     self.imageData = [[NSMutableData alloc]init];
@@ -269,17 +291,22 @@ didReceiveResponse:(NSURLResponse *)response
           dataTask:(NSURLSessionDataTask *)dataTask
     didReceiveData:(NSData *)data
 {
-   [self.imageData appendData:data];
-   float per = [self.imageData length ]/_downloadSize;
-   self.customCell.progressView.progress = per;
-   self.customCell.realProgressStatus.text = [NSString stringWithFormat:@"%0.f%%", per*100];
+    [self.imageData appendData:data];
+    float per = [self.imageData length ]/_downloadSize;
+    self.customCell.progressView.progress = per;
+    self.customCell.realProgressStatus.text = [NSString stringWithFormat:@"%0.f%%", per*100];
 }
 
 -(void)URLSession:(NSURLSession *)session
              task:(NSURLSessionTask *)task
 didCompleteWithError:(NSError *)error
 {
-    NSLog(@"completed; error: %@", error);
+    
+    if(error)
+    {
+        NSLog(@"completed; error: %@", error);
+    NSLog(@"Error in table view");
+    }
 }
 
 
@@ -287,7 +314,11 @@ didCompleteWithError:(NSError *)error
 {
     self.customCell = data;
     self.selectedCell = cellIndex;
- 
+    
+     if(self.downloadTask.state == NSURLSessionTaskStateRunning)
+         [self.downloadTask cancel];
+    
+   // [[[self.dataDictionary objectForKey:self.names[cellIndex]] currentQueue] cancel];
 }
 
 

@@ -10,9 +10,16 @@
 #import "CustomTableViewCell.h"
 #import "Protocol.h"
 #import "MyOperationQueue.h"
+#import "ObjectForTableCell.h"
+#import "ImageViewController.h"
+
 
 @interface ContentTableView : UITableViewController<CellDelegate, NSURLSessionDataDelegate, NSURLSessionDelegate, NSURLSessionTaskDelegate>
 
+@property(strong, nonatomic) NSMutableDictionary* dataDictionary;
+@property(strong, nonatomic) NSMutableArray* names;
+@property(strong, nonatomic) NSMutableSet* tagsOfCells;
 
++ (instancetype)sharedManager;
 
 @end

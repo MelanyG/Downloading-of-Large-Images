@@ -7,11 +7,15 @@
 //
 #import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
+#import "MyOperationQueue.h"
 
 @interface ObjectForTableCell : NSObject
 
+
+@property (strong, nonatomic) MyOperationQueue* currentQueue;
 @property(strong, nonatomic) NSString* imageName;
 @property(strong, nonatomic) NSString* imeageURL;
-@property (strong, nonatomic) UIImage* myTemporaryImage;
+@property (strong, nonatomic) UIImage* downloadedImage;
+
 
 @end

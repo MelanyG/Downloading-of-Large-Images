@@ -27,10 +27,13 @@
     [self setCurrentCell:row];
     self.customCell = [[CustomTableViewCell alloc]init];
     self.tableView = [ContentTableView sharedManager];
-     self.defaultSession = [self configureSession];
-    [self isAsynchronous];
+    self.defaultSession = [self configureSession];
+    self.isAsynchronous = YES;
+    self.isExecuting = YES;
     return self;
 }
+#pragma mark  - Overrides
+
 
 - (BOOL)isExecuting
 {
@@ -49,10 +52,7 @@
     return YES;
 }
 
-//-(void)start
-//{
-//    
-//}
+#pragma mark  - Main & Utility Methods
 
 - (void)main
 {
@@ -65,45 +65,65 @@
 
     
     
-    NSURLSessionDownloadTask *task = [self.defaultSession downloadTaskWithURL:self.targetURL];
+    self.downloadTask = [self.defaultSession downloadTaskWithURL:self.targetURL];
     NSLog(@"I suppose that this queue also download this image");
     
     if ([self isCancelled])  return;
     
     //[self performSelectorOnMainThread:@selector(updateButton) withObject:nil waitUntilDone:NO];
-    [task resume];
+    [ self.downloadTask  resume];
     NSLog(@"Operation finished");
 
+}
+
+- (void)finish
+{
+    [self willChangeValueForKey:@"isExecuting"];
+    [self willChangeValueForKey:@"isFinished"];
+    self.defaultSession = nil;
+    [self didChangeValueForKey:@"isFinished"];
+    [self didChangeValueForKey:@"isExecuting"];
+    
+    NSLog(@"operationfinished.");
 }
 
 - (void)cancel
 {
     [super cancel];
-    self.isCancelled = YES;
-    NSLog(@"** operation cancelled **");
+    [self willChangeValueForKey:@"isExecuting"];
+    [self willChangeValueForKey:@"isFinished"];
+    self.isExecuting = NO;
+    self.isFinished  = YES;
+    [self didChangeValueForKey:@"isFinished"];
+    [self didChangeValueForKey:@"isExecuting"];
+
     if(self.downloadTask.state == NSURLSessionTaskStateRunning)
         [self.downloadTask cancel];
+    
+     NSLog(@"** operation cancelled **");
 }
 
 - (void)updateButton
 {
-    NSLog(@"Visitied New York");
-   
+    NSLog(@"Visited New York");
+    
 }
+
+#pragma mark  - Delegate Methods for NSURLSession
 
 - (NSURLSession *) configureSession
 {
     NSLog(@"configureSession in Queue");
     NSURLSessionConfiguration *config =
     [NSURLSessionConfiguration backgroundSessionConfigurationWithIdentifier:@"com.my.backgroundDownload"];
-    config.allowsCellularAccess = NO;
-    //ObjectForTableCell* tmp =[self.tableView.dataDictionary objectForKey:self.tableView.names[self.currentCell]];
-    // NSURL *url = [NSURL URLWithString: tmp.imeageURL];
-    // MyOperationQueue * one = [[MyOperationQueue alloc]initWithURL:url andRaw:self.currentCell];
-    //one.cancelled = YES;
-    //NSOperationQueue* que = [[NSOperationQueue alloc]init];
-    NSURLSession *session = [NSURLSession sessionWithConfiguration:config delegate:self.tableView delegateQueue:nil];
-    //[self.queue addOperation:one];
+    config.sessionSendsLaunchEvents = YES;
+    config.discretionary = YES;
+    //    NSURLSessionConfiguration *config =
+    //    [NSURLSessionConfiguration defaultSessionConfiguration];
+    //config.allowsCellularAccess = NO;
+    
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:config delegate:self delegateQueue:nil];
+    
     //[[self.dataDictionary objectForKey:self.names[self.selectedCell]] setCurrentQueue:one];
     return session;
 }
@@ -114,13 +134,18 @@
 totalBytesWritten:(int64_t)totalBytesWritten
 totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
 {
+    self.downloadTask = downloadTask;
+    if([self isCancelled])
+    {
+        [self cancel];
+        return;
+    }
     dispatch_async(dispatch_get_main_queue(), ^{
         float progress = (float) (totalBytesWritten/1024) / (float) (totalBytesExpectedToWrite/1024);
         if ([self isCancelled])
         {
             NSLog(@"** operation cancelled **");
         }
-        
         self.customCell.progressView.progress = progress;
         self.customCell.realProgressStatus.text = [NSString stringWithFormat:@"%0.f%%", progress*100];
         // NSLog(@"downloaded %d%%", (int)(100.0*prog));
@@ -131,6 +156,12 @@ totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
      downloadTask:(NSURLSessionDownloadTask *)downloadTask
 didFinishDownloadingToURL:(NSURL *)location
 {
+       self.downloadTask = downloadTask;
+    if([self isCancelled])
+    {
+        [self cancel];
+        return;
+    }
     NSLog(@"didFinishDownloadingToURL - Queue");
     NSData *d = [NSData dataWithContentsOfURL:location];
     UIImage *im = [UIImage imageWithData:d];
@@ -144,12 +175,8 @@ didFinishDownloadingToURL:(NSURL *)location
     NSNumber *myNum = [NSNumber numberWithInteger:self.currentCell];
     [self.tableView.tagsOfCells addObject:myNum];
     [[self.tableView.dataDictionary objectForKey:self.tableView.names[self.currentCell]]setCustomCell:self.customCell];
-    self.defaultSession = nil;
-        [self willChangeValueForKey:@"isExecuting"];
-    [self willChangeValueForKey:@"isFinished"];
-    self.defaultSession = nil;
-    [self didChangeValueForKey:@"isFinished"];
-    [self didChangeValueForKey:@"isExecuting"];
+    
+    
 }
 
 
@@ -158,6 +185,12 @@ didFinishDownloadingToURL:(NSURL *)location
 didReceiveResponse:(NSURLResponse *)response
  completionHandler:(void (^)(NSURLSessionResponseDisposition disposition))completionHandler
 {
+    if([self isCancelled])
+    {
+        [self cancel];
+        return;
+    }
+       //self.downloadTask = dataTask;
     completionHandler(NSURLSessionResponseAllow);
     NSLog(@"didReceiveResponse in Queue");
     self.customCell.progressView.progress = 0.0f;
@@ -176,24 +209,35 @@ didReceiveResponse:(NSURLResponse *)response
     self.imageData = [[NSMutableData alloc] initWithCapacity:self.totalBytes];
 }
 
-- (void)URLSession:(NSURLSession *)session
-          dataTask:(NSURLSessionDataTask *)dataTask
-    didReceiveData:(NSData *)data
-{
-    [self.imageData appendData:data];
-    float per = [self.imageData length ]/_downloadSize;
-    self.customCell.progressView.progress = per;
-    self.customCell.realProgressStatus.text = [NSString stringWithFormat:@"%0.f%%", per*100];
-}
+//- (void)URLSession:(NSURLSession *)session
+//          dataTask:(NSURLSessionDataTask *)dataTask
+//    didReceiveData:(NSData *)data
+//{
+//    if([self isCancelled])
+//    {
+//        [self cancel];
+//        return;
+//    }
+//    [self.imageData appendData:data];
+//    float per = [self.imageData length ]/_downloadSize;
+//    self.customCell.progressView.progress = per;
+//    self.customCell.realProgressStatus.text = [NSString stringWithFormat:@"%0.f%%", per*100];
+//}
 
 -(void)URLSession:(NSURLSession *)session
              task:(NSURLSessionTask *)task
 didCompleteWithError:(NSError *)error
 {
+    if([self isCancelled])
+    {
+        [self cancel];
+        return;
+    }
     if(error)
     {
         NSLog(@"Error Queue");
         NSLog(@"completed; error: %@", error);
+        [self cancel];
     }
 }
 

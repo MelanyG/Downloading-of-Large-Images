@@ -9,15 +9,14 @@
 #import <Foundation/Foundation.h>
 @class ContentTableView;
 @class CustomTableViewCell;
-//#import "ObjectForTableCell.h"
+
 
 @interface MyOperationQueue : NSOperation <NSURLSessionDataDelegate, NSURLSessionDelegate, NSURLSessionTaskDelegate>
 
 @property(assign, nonatomic) BOOL isCancelled;
-//@property(assign, nonatomic) BOOL isFinished;
 @property (nonatomic, readwrite, getter = isExecuting) BOOL isExecuting;
 @property (nonatomic, readwrite, getter = isFinished)  BOOL isFinished;
-@property (nonatomic, readwrite, getter = isFinished)  BOOL isAsynchronous;
+@property (nonatomic, readwrite, getter = isAsynchronous)  BOOL isAsynchronous;
 @property(strong, nonatomic) ContentTableView* tableView;
 
 @property(assign, nonatomic) NSInteger currentCell;

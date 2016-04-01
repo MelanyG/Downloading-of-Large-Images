@@ -35,60 +35,120 @@
 
 @implementation ContentTableView
 
-+ (instancetype)sharedManager
-{
-    static ContentTableView *instance = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        instance = [[ContentTableView alloc] init];
-    });
-    return instance;
-}
+//+ (instancetype)sharedManager
+//{
+//    static ContentTableView *instance = nil;
+//    static dispatch_once_t onceToken;
+//    dispatch_once(&onceToken, ^{
+//        instance = [[ContentTableView alloc] init];
+//        
+//    });
+//    return instance;
+//}
+
+//- (id) init
+//{
+//    //self.dataDictionary = [[NSMutableDictionary alloc]init];
+//    self.queue = [[NSOperationQueue alloc] init];
+//    self.queue.name = @"Background Queue";
+//    [self.queue setMaxConcurrentOperationCount:4];
+//
+
+    //self.savedImages = [[NSMutableDictionary alloc]init];
+//    self.tagsOfCells = [[NSMutableSet alloc]init];
+//    self.names = [[NSMutableArray alloc]initWithObjects:@"Snow Tiger", @"Elephant", @"Sunset",@"Nature silence",@"Tree",@"White tiger",@"Waterfall",@"Owl",@"Fairytail",@"End of space",@"House", @"Beautiful Nature",@"Green Waterfall", @"Wooden road", @"Beach", @"Color nature", @"Autumn nature", @"New year", @"Christmas tree", @"Christmas", nil];
+//    NSArray* urlNames = [[NSArray alloc]initWithObjects:
+//                         @"https://www.planwallpaper.com/static/images/Winter-Tiger-Wild-Cat-Images.jpg",
+//                         @"https://www.planwallpaper.com/static/images/9-credit-1.jpg",
+//                         @"https://www.planwallpaper.com/static/images/wallpaper-sunset-images-back-217159.jpg",
+//                         @"https://www.planwallpaper.com/static/images/beautiful-sunset-images-196063.jpg",
+//                         @"https://www.planwallpaper.com/static/images/6775415-beautiful-images.jpg",
+//                         @"https://www.planwallpaper.com/static/images/desktop-year-of-the-tiger-images-wallpaper.jpg",
+//                         @"https://www.planwallpaper.com/static/images/6986083-waterfall-images_Mc3SaMS.jpg",
+//                         @"https://www.planwallpaper.com/static/images/7028135-cool-pictures-for-wallpapers-hd.jpg",
+//                         @"https://www.planwallpaper.com/static/images/2ba7dbaa96e79e4c81dd7808706d2bb7_large.jpeg",
+//                         @"https://www.planwallpaper.com/static/images/6-940622110b39cad584098e6749eac708.jpg",
+//                         @"https://www.planwallpaper.com/static/images/6-house-in-green-field.jpg",
+//                         @"https://www.planwallpaper.com/static/images/Blue-Green-beautiful-nature-21891805-1920-1200.jpg",
+//                         @"https://www.planwallpaper.com/static/images/Nature-Wallpapers-6_J0BmGvg.jpg",
+//                         @"https://www.planwallpaper.com/static/images/Rossville_Boardwalk_Wolf_River.jpg",
+//                         @"https://www.planwallpaper.com/static/images/clairvoyant-nature-nature5.jpg",
+//                         @"https://www.planwallpaper.com/static/images/colorful-nature-wallpaper.jpg",
+//                         @"https://www.planwallpaper.com/static/images/autumn-nature-bridge-wood-trees-leaves-red-green-yellow.jpg",
+//                         @"https://www.planwallpaper.com/static/images/9c752472-d5a9-4d74-978c-344511d0896e.jpg",
+//                         @"https://www.planwallpaper.com/static/images/LOA-christmas-tree.jpg",
+//                         @"https://www.planwallpaper.com/static/images/Clifton_Mill_Christmas_2005.JPG",
+//                         nil];
+//    NSInteger count =[self.names count];
+//    
+//    for(int i=0; i< count; i++)
+//    {
+//        ObjectForTableCell* tmp = [[ObjectForTableCell alloc]init];
+//        tmp.imageName = self.names[i];
+//        tmp.imeageURL = urlNames[i];
+//        [self.dataDictionary setObject:tmp forKey:self.names[i]];
+//    }
+//
+//   return self;
+//}
+
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    //NSURLSessionConfiguration *defaultConfigObject = [NSURLSessionConfiguration defaultSessionConfiguration];
-    
+
+    //self.dataDictionary = [[NSMutableDictionary alloc]init];
     self.queue = [[NSOperationQueue alloc] init];
     self.queue.name = @"Background Queue";
-    [self.queue setMaxConcurrentOperationCount:4];
-    self.dataDictionary = [[NSMutableDictionary alloc]init];
-    //self.savedImages = [[NSMutableDictionary alloc]init];
-    self.tagsOfCells = [[NSMutableSet alloc]init];
-    self.names = [[NSMutableArray alloc]initWithObjects:@"Snow Tiger", @"Elephant", @"Sunset",@"Nature silence",@"Tree",@"White tiger",@"Waterfall",@"Owl",@"Fairytail",@"End of space",@"House", @"Beautiful Nature",@"Green Waterfall", @"Wooden road", @"Beach", @"Color nature", @"Autumn nature", @"New year", @"Christmas tree", @"Christmas", nil];
-    NSArray* urlNames = [[NSArray alloc]initWithObjects:
-                         @"https://www.planwallpaper.com/static/images/Winter-Tiger-Wild-Cat-Images.jpg",
-                         @"https://www.planwallpaper.com/static/images/9-credit-1.jpg",
-                         @"https://www.planwallpaper.com/static/images/wallpaper-sunset-images-back-217159.jpg",
-                         @"https://www.planwallpaper.com/static/images/beautiful-sunset-images-196063.jpg",
-                         @"https://www.planwallpaper.com/static/images/6775415-beautiful-images.jpg",
-                         @"https://www.planwallpaper.com/static/images/desktop-year-of-the-tiger-images-wallpaper.jpg",
-                         @"https://www.planwallpaper.com/static/images/6986083-waterfall-images_Mc3SaMS.jpg",
-                         @"https://www.planwallpaper.com/static/images/7028135-cool-pictures-for-wallpapers-hd.jpg",
-                         @"https://www.planwallpaper.com/static/images/2ba7dbaa96e79e4c81dd7808706d2bb7_large.jpeg",
-                         @"https://www.planwallpaper.com/static/images/6-940622110b39cad584098e6749eac708.jpg",
-                         @"https://www.planwallpaper.com/static/images/6-house-in-green-field.jpg",
-                         @"https://www.planwallpaper.com/static/images/Blue-Green-beautiful-nature-21891805-1920-1200.jpg",
-                         @"https://www.planwallpaper.com/static/images/Nature-Wallpapers-6_J0BmGvg.jpg",
-                         @"https://www.planwallpaper.com/static/images/Rossville_Boardwalk_Wolf_River.jpg",
-                         @"https://www.planwallpaper.com/static/images/clairvoyant-nature-nature5.jpg",
-                         @"https://www.planwallpaper.com/static/images/colorful-nature-wallpaper.jpg",
-                         @"https://www.planwallpaper.com/static/images/autumn-nature-bridge-wood-trees-leaves-red-green-yellow.jpg",
-                         @"https://www.planwallpaper.com/static/images/9c752472-d5a9-4d74-978c-344511d0896e.jpg",
-                         @"https://www.planwallpaper.com/static/images/LOA-christmas-tree.jpg",
-                         @"https://www.planwallpaper.com/static/images/Clifton_Mill_Christmas_2005.JPG",
-                         nil];
-    NSInteger count =[self.names count];
+    //[self.queue seM:4];
+    NSNotificationCenter* nc = [NSNotificationCenter defaultCenter];
     
-    for(int i=0; i< count; i++)
-    {
-        ObjectForTableCell* tmp = [[ObjectForTableCell alloc]init];
-        tmp.imageName = self.names[i];
-        tmp.imeageURL = urlNames[i];
-        [self.dataDictionary setObject:tmp forKey:self.names[i]];
-    }
-}
+    [nc addObserver:self
+           selector:@selector(updatePage)
+               name:LoadImagesNotification
+             object:nil];
+
+        self.source = [DataSourse sharedManager];
+    //self.savedImages = [[NSMutableDictionary alloc]init];
+//    self.tagsOfCells = [[NSMutableSet alloc]init];
+//    self.names = [[NSMutableArray alloc]initWithObjects:@"Snow Tiger", @"Elephant", @"Sunset",@"Nature silence",@"Tree",@"White tiger",@"Waterfall",@"Owl",@"Fairytail",@"End of space",@"House", @"Beautiful Nature",@"Green Waterfall", @"Wooden road", @"Beach", @"Color nature", @"Autumn nature", @"New year", @"Christmas tree", @"Christmas", nil];
+//    NSArray* urlNames = [[NSArray alloc]initWithObjects:
+//                         @"https://www.planwallpaper.com/static/images/Winter-Tiger-Wild-Cat-Images.jpg",
+//                         @"https://www.planwallpaper.com/static/images/9-credit-1.jpg",
+//                         @"https://www.planwallpaper.com/static/images/wallpaper-sunset-images-back-217159.jpg",
+//                         @"https://www.planwallpaper.com/static/images/beautiful-sunset-images-196063.jpg",
+//                         @"https://www.planwallpaper.com/static/images/6775415-beautiful-images.jpg",
+//                         @"https://www.planwallpaper.com/static/images/desktop-year-of-the-tiger-images-wallpaper.jpg",
+//                         @"https://www.planwallpaper.com/static/images/6986083-waterfall-images_Mc3SaMS.jpg",
+//                         @"https://www.planwallpaper.com/static/images/7028135-cool-pictures-for-wallpapers-hd.jpg",
+//                         @"https://www.planwallpaper.com/static/images/2ba7dbaa96e79e4c81dd7808706d2bb7_large.jpeg",
+//                         @"https://www.planwallpaper.com/static/images/6-940622110b39cad584098e6749eac708.jpg",
+//                         @"https://www.planwallpaper.com/static/images/6-house-in-green-field.jpg",
+//                         @"https://www.planwallpaper.com/static/images/Blue-Green-beautiful-nature-21891805-1920-1200.jpg",
+//                         @"https://www.planwallpaper.com/static/images/Nature-Wallpapers-6_J0BmGvg.jpg",
+//                         @"https://www.planwallpaper.com/static/images/Rossville_Boardwalk_Wolf_River.jpg",
+//                         @"https://www.planwallpaper.com/static/images/clairvoyant-nature-nature5.jpg",
+//                         @"https://www.planwallpaper.com/static/images/colorful-nature-wallpaper.jpg",
+//                         @"https://www.planwallpaper.com/static/images/autumn-nature-bridge-wood-trees-leaves-red-green-yellow.jpg",
+//                         @"https://www.planwallpaper.com/static/images/9c752472-d5a9-4d74-978c-344511d0896e.jpg",
+//                         @"https://www.planwallpaper.com/static/images/LOA-christmas-tree.jpg",
+//                         @"https://www.planwallpaper.com/static/images/Clifton_Mill_Christmas_2005.JPG",
+//                         nil];
+//    NSInteger count =[self.names count];
+//    
+//    for(int i=0; i< count; i++)
+//    {
+//        ObjectForTableCell* tmp = [[ObjectForTableCell alloc]init];
+//        tmp.imageName = self.names[i];
+//        tmp.imeageURL = urlNames[i];
+//        [self.dataDictionary setObject:tmp forKey:self.names[i]];
+//    }
+
+    
+    //self.savedImages = [[NSMutableDictionary alloc]init];
+   
+    //NSURLSessionConfiguration *defaultConfigObject = [NSURLSessionConfiguration defaultSessionConfiguration];
+   }
 
 #pragma mark - Navigation with Segue
 
@@ -97,8 +157,17 @@
     if ([segue.identifier isEqualToString:@"ImageVC"])
     {
         ImageViewController * ivc = segue.destinationViewController;
-        ivc.myTemporaryImage = [[self.dataDictionary objectForKey:self.names[self.selectedCell]] downloadedImage];
+        ivc.myTemporaryImage = [[self.source.dataDictionary objectForKey:self.source.names[self.selectedCell]] downloadedImage];
     }
+}
+
+#pragma mark - Notification
+
+-(void)updatePage
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+    [self.tableView reloadData];
+    });
 }
 
 #pragma mark - Table view data source
@@ -110,7 +179,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [self.names count];
+    return [self.source.names count];
 }
 
 
@@ -128,11 +197,10 @@
     }
     
     NSNumber *myNum = [NSNumber numberWithInteger:indexPath.row];
-    
-    if (![self.tagsOfCells containsObject:myNum])
+    UIImage *img = [UIImage imageNamed:@"placeholder"];
+    if (![self.source.tagsOfCells containsObject:myNum])
     {
         
-        UIImage *img = [UIImage imageNamed:@"placeholder"];
         customCell.realProgressStatus.text = @"";
         customCell.progressView.progress = 0.1;
         customCell.image.image = img;
@@ -141,15 +209,26 @@
     }
     else
     {
-        customCell.image.image = [[self.dataDictionary objectForKey:self.names[indexPath.row]] downloadedImage];
-        customCell.realProgressStatus.text = @"Downloaded";
-        customCell.progressView.progress = 1;
+        if([[self.source.dataDictionary objectForKey:self.source.names[indexPath.row]] downloadedImage])
+        {
+        customCell.image.image = [[self.source.dataDictionary objectForKey:self.source.names[indexPath.row]] downloadedImage];
+        customCell.realProgressStatus.text = [[self.source.dataDictionary objectForKey:self.source.names[indexPath.row]] realProgressViewStatus];
+        customCell.progressView.progress = [[self.source.dataDictionary objectForKey:self.source.names[indexPath.row]] progressData];
         customCell.startButton.enabled = NO;
+        }
+        else
+        {
+            customCell.image.image = img;
+            customCell.realProgressStatus.text = [[self.source.dataDictionary objectForKey:self.source.names[indexPath.row]] realProgressViewStatus];
+            customCell.progressView.progress = [[self.source.dataDictionary objectForKey:self.source.names[indexPath.row]] progressData];
+            customCell.startButton.enabled = NO;
+
+        }
     }
     
     customCell.delegate = self;
     customCell.cellIndex = indexPath.row;
-    customCell.nameOfImage.text = self.names[indexPath.row];
+    customCell.nameOfImage.text = self.source.names[indexPath.row];
     if ( indexPath.row % 2 == 0 )
         customCell.backgroundColor = [UIColor grayColor];
     else
@@ -164,7 +243,7 @@
 -(NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     self.selectedCell = indexPath.row;
-    if ([[self.dataDictionary objectForKey:self.names[self.selectedCell]]downloadedImage])
+    if ([[self.source.dataDictionary objectForKey:self.source.names[self.selectedCell]]downloadedImage])
     {
         [self performSegueWithIdentifier:@"ImageVC" sender: indexPath];
         return nil;
@@ -186,15 +265,15 @@
 - (void)didClickStartAtIndex:(NSInteger)cellIndex withData:(CustomTableViewCell*)data
 {
     
-    
+    self.source.experiment = cellIndex;
     
     //dispatch_async(myAsyncQueue, ^{
 //    CustomTableViewCell* customCell = [[CustomTableViewCell alloc]init];
 //    customCell = data;
-    [[self.dataDictionary objectForKey:self.names[cellIndex]]setCustomCell:data];
+    //[[self.source.dataDictionary objectForKey:self.source.names[cellIndex]]setCustomCell:data];
    // self.customCell = data;
     self.selectedCell = cellIndex;
-    ObjectForTableCell* tmp =[self.dataDictionary objectForKey:self.names[cellIndex]];
+    ObjectForTableCell* tmp =[self.source.dataDictionary objectForKey:self.source.names[cellIndex]];
     
     //    NSURLSessionConfiguration *defaultConfigObject = [NSURLSessionConfiguration defaultSessionConfiguration];
     //    NSURLSession *defaultSession = [NSURLSession sessionWithConfiguration: defaultConfigObject delegate: self delegateQueue: [NSOperationQueue currentQueue]];
@@ -202,8 +281,9 @@
     //defaultSession = [self configureSession];
     NSURL *url = [NSURL URLWithString: tmp.imeageURL];
     MyOperationQueue * one = [[MyOperationQueue alloc]initWithURL:url andRaw:self.selectedCell];
+    one.currentCell = self.selectedCell;
     [self.queue addOperation:one];
-    [[self.dataDictionary objectForKey:self.names[self.selectedCell]] setCurrentQueue:one];
+    [[self.source.dataDictionary objectForKey:self.source.names[self.selectedCell]] setCurrentQueue:one];
     //NSURLSessionDownloadTask *task = [defaultSession downloadTaskWithURL:url];
     //[task resume];
     

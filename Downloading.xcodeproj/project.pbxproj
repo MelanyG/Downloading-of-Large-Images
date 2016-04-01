@@ -20,6 +20,7 @@
 		3637A4701CA68EC7007B90D1 /* CustomTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3637A46F1CA68EC7007B90D1 /* CustomTableViewCell.m */; };
 		3637A4731CA6A91F007B90D1 /* ObjectForTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3637A4721CA6A91F007B90D1 /* ObjectForTableCell.m */; };
 		3637A47A1CA7475B007B90D1 /* ImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3637A4791CA7475B007B90D1 /* ImageViewController.m */; };
+		363B80121CADDC0600EB0AFB /* DataSourse.m in Sources */ = {isa = PBXBuildFile; fileRef = 363B80111CADDC0600EB0AFB /* DataSourse.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -67,6 +68,8 @@
 		3637A4741CA6C326007B90D1 /* Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Protocol.h; sourceTree = "<group>"; };
 		3637A4781CA7475B007B90D1 /* ImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageViewController.h; sourceTree = "<group>"; };
 		3637A4791CA7475B007B90D1 /* ImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageViewController.m; sourceTree = "<group>"; };
+		363B80101CADDC0600EB0AFB /* DataSourse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataSourse.h; sourceTree = "<group>"; };
+		363B80111CADDC0600EB0AFB /* DataSourse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataSourse.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,6 +100,8 @@
 		3637A42C1CA67507007B90D1 = {
 			isa = PBXGroup;
 			children = (
+				363B80101CADDC0600EB0AFB /* DataSourse.h */,
+				363B80111CADDC0600EB0AFB /* DataSourse.m */,
 				36349BD51CAAB0A100D99751 /* MyOperationQueue.h */,
 				36349BD61CAAB0A100D99751 /* MyOperationQueue.m */,
 				3637A4781CA7475B007B90D1 /* ImageViewController.h */,
@@ -300,6 +305,7 @@
 				3637A4401CA67507007B90D1 /* ViewController.m in Sources */,
 				36349BD71CAAB0A100D99751 /* MyOperationQueue.m in Sources */,
 				3637A43D1CA67507007B90D1 /* AppDelegate.m in Sources */,
+				363B80121CADDC0600EB0AFB /* DataSourse.m in Sources */,
 				3637A43A1CA67507007B90D1 /* main.m in Sources */,
 				3637A4731CA6A91F007B90D1 /* ObjectForTableCell.m in Sources */,
 				3637A4701CA68EC7007B90D1 /* CustomTableViewCell.m in Sources */,

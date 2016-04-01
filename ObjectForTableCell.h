@@ -16,7 +16,9 @@
 @property(strong, nonatomic) NSString* imageName;
 @property(strong, nonatomic) NSString* imeageURL;
 @property (strong, nonatomic) UIImage* downloadedImage;
-@property(strong, nonatomic) CustomTableViewCell *customCell;
+//@property(strong, nonatomic) CustomTableViewCell *customCell;
+@property (strong, nonatomic) NSString* realProgressViewStatus;
+@property (assign, atomic) CGFloat progressData;
 
 
 @end

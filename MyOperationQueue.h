@@ -17,7 +17,7 @@ extern NSString* const LoadImagesNotification;
 
 @interface MyOperationQueue : NSOperation <NSURLSessionDataDelegate, NSURLSessionDelegate, NSURLSessionTaskDelegate>
 
-@property(assign, nonatomic) BOOL isCancelled;
+@property(readonly, getter=isCancelled) BOOL cancelled;
 @property(nonatomic, getter=isExecuting) BOOL executing;
 @property(nonatomic, getter=isFinished) BOOL finished;
 @property(readonly, getter=isAsynchronous) BOOL asynchronous;

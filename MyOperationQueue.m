@@ -14,7 +14,7 @@
 NSString* const LoadImagesNotification = @"ImagesLoaded";
 
 
-static NSInteger visitedTimes;
+//static NSInteger visitedTimes;
 //NSInteger selectedCell;
 //NSMutableArray *currentDownloadings;
                                       
@@ -28,7 +28,7 @@ static NSInteger visitedTimes;
 @implementation MyOperationQueue
 @dynamic executing;
 @dynamic finished;
-
+@dynamic cancelled;
 
 - (id)initWithURL:(NSURL*)url andRaw:(NSInteger)row
 {
@@ -71,12 +71,12 @@ static NSInteger visitedTimes;
         return;
     
     self.downloadTask = [self.defaultSession downloadTaskWithURL:self.targetURL];
-    NSLog(@"I suppose that this queue also download this image");
+
      [self didChangeValueForKey:@"isExecuting"];
     if ([self isCancelled])  return;
 
     [ self.downloadTask  resume];
-    NSLog(@"Operation finished");
+
 
 }
 
@@ -88,7 +88,7 @@ static NSInteger visitedTimes;
     self.downloadTask = nil;
     [self didChangeValueForKey:@"isFinished"];
     [self didChangeValueForKey:@"isExecuting"];
-     NSLog(@"operationfinished.");
+
     
 }
 
@@ -122,7 +122,7 @@ static NSInteger visitedTimes;
     config.discretionary = YES;
    
     NSURLSession *session = [NSURLSession sessionWithConfiguration:config delegate:self delegateQueue:nil];
-    
+    NSLog(@"Session:  %@", [NSString stringWithFormat:@"%p", session]);
     return session;
 }
 
@@ -132,21 +132,27 @@ static NSInteger visitedTimes;
 totalBytesWritten:(int64_t)totalBytesWritten
 totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
 {
-        self.downloadTask = downloadTask;
+    NSInteger selectedCell = [[self.sourse.queueRegistration objectForKey:[NSString stringWithFormat:@"%p", self]]intValue];
+
+    self.downloadTask = downloadTask;
+    NSNumber *myNum = [NSNumber numberWithInteger:selectedCell];
+    [self.sourse.tagsOfCells addObject:myNum];
+
     if([self isCancelled])
-    {
+    { NSLog(@"One");
         [self cancel];
         return;
     }
     //dispatch_async(dispatch_get_main_queue(), ^{
         float progress = (float) (totalBytesWritten/1024) / (float) (totalBytesExpectedToWrite/1024);
         if ([self isCancelled])
-        {
+        { NSLog(@"Two");
+            [self cancel];
          return;
         }
         //self.customCell.progressView.progress = progress;
         //self.customCell.realProgressStatus.text = [NSString stringWithFormat:@"%0.f%%", progress*100];
-    NSInteger selectedCell = [[self.sourse.queueRegistration objectForKey:[NSString stringWithFormat:@"%p", self]]intValue];
+   
     [[self.sourse.dataDictionary objectForKey:self.sourse.names[selectedCell]] setRealProgressViewStatus:[NSString stringWithFormat:@"%0.f%%", progress*100]];
     [[self.sourse.dataDictionary objectForKey:self.sourse.names[selectedCell]] setProgressData:progress];
     [self performSelectorOnMainThread:@selector(updateButton) withObject:nil waitUntilDone:NO];
@@ -161,19 +167,19 @@ totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
      downloadTask:(NSURLSessionDownloadTask *)downloadTask
 didFinishDownloadingToURL:(NSURL *)location
 {
-    if(visitedTimes == 1)
-    {
-        [self cancel];
-        NSLog(@"Visited = %ld",(long)visitedTimes);
-        //NSLog(@"SelectedCell = %ld",(long)selectedCell);
-         NSLog(@"SelectedCell = %@", self.name);
-        visitedTimes = 0;
-        [self main];
-    }
+//    if(visitedTimes == 1)
+//    {
+//        [self cancel];
+//        NSLog(@"Visited = %ld",(long)visitedTimes);
+//        //NSLog(@"SelectedCell = %ld",(long)selectedCell);
+//         NSLog(@"SelectedCell = %@", self.name);
+//        visitedTimes = 0;
+//        [self main];
+//    }
 
        self.downloadTask = downloadTask;
     if([self isCancelled])
-    {
+    { NSLog(@"Three");
         [self cancel];
         return;
     }
@@ -191,8 +197,8 @@ didFinishDownloadingToURL:(NSURL *)location
     [[self.sourse.dataDictionary objectForKey:self.sourse.names[selectedCell]] setRealProgressViewStatus:@"Downloaded"];
     [[self.sourse.dataDictionary objectForKey:self.sourse.names[selectedCell]] setProgressData:1.f];
     //[self.savedImages setObject:im forKey:self.customCell.nameOfImage.text];
-    NSNumber *myNum = [NSNumber numberWithInteger:selectedCell];
-    [self.sourse.tagsOfCells addObject:myNum];
+//    NSNumber *myNum = [NSNumber numberWithInteger:selectedCell];
+//    [self.sourse.tagsOfCells addObject:myNum];
     //[[self.sourse.dataDictionary objectForKey:self.sourse.names[self.currentCell]]setCustomCell:self.customCell];
     [self performSelectorOnMainThread:@selector(updateButton) withObject:nil waitUntilDone:NO];
 //    [[NSNotificationCenter defaultCenter] postNotificationName:LoadImagesNotification

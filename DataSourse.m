@@ -25,7 +25,7 @@
 {
     self.dataDictionary = [[NSMutableDictionary alloc]init];
     self.tagsOfCells = [[NSMutableSet alloc]init];
-    self.names = [[NSMutableArray alloc]initWithObjects:@"Snow Tiger", @"Elephant", @"Sunset",@"Nature silence",@"Tree",@"White tiger",@"Waterfall",@"Owl",@"Fairytail",@"End of space",@"House", @"Beautiful Nature",@"Green Waterfall", @"Wooden road", @"Beach", @"Color nature", @"Autumn nature", @"New year", @"Christmas tree", @"Christmas", nil];
+    self.names = [[NSMutableArray alloc]initWithObjects:@"Snow Tiger", @"Elephant", @"Sunset",@"Nature silence",@"Tree",@"White tiger",@"Waterfall",@"Owl",@"Fairytail",@"End of space",@"House", @"Beauty Nature",@"Green Water", @"Wooden road", @"Beach", @"Color nature", @"Autumn nature", @"New year", @"Christmas tree", @"Christmas", nil];
     NSArray* urlNames = [[NSArray alloc]initWithObjects:
                          @"https://www.planwallpaper.com/static/images/Winter-Tiger-Wild-Cat-Images.jpg",
                          @"https://www.planwallpaper.com/static/images/9-credit-1.jpg",

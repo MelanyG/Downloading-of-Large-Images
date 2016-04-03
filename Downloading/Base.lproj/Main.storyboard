@@ -64,9 +64,9 @@
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="78" id="XYd-g5-iCb"/>
                                             </constraints>
-                                            <fontDescription key="fontDescription" name="Zapfino" family="Zapfino" pointSize="18"/>
+                                            <fontDescription key="fontDescription" name="Zapfino" family="Zapfino" pointSize="19"/>
                                             <color key="textColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
-                                            <nil key="highlightedColor"/>
+                                            <color key="highlightedColor" red="0.12998911738395691" green="0.11880668252706528" blue="0.033459097146987915" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </label>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" reversesTitleShadowWhenHighlighted="YES" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2fo-1H-L4o">
                                             <rect key="frame" x="17" y="94" width="91" height="30"/>

@@ -24,6 +24,8 @@
     
     self.queue = [[NSOperationQueue alloc] init];
     self.queue.name = @"Background Queue";
+    
+    
     NSNotificationCenter* nc = [NSNotificationCenter defaultCenter];
     
     [nc addObserver:self
@@ -31,6 +33,11 @@
                name:LoadImagesNotification
              object:nil];
     
+    UIColor *bg = [UIColor darkGrayColor];
+    [self.navigationController.navigationBar setBarTintColor:bg];
+    [self.navigationController.navigationBar setTranslucent:YES];
+    [self.navigationController.navigationBar setBarStyle:UIBarStyleBlack];
+    [self.navigationController.navigationBar setTitleTextAttributes:@{ NSFontAttributeName: [UIFont fontWithName:@"Zapfino" size:20.0f],NSForegroundColorAttributeName: [UIColor whiteColor]}];
     self.source = [DataSourse sharedManager];
 }
 

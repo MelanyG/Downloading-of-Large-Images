@@ -14,6 +14,8 @@
 {
     [super viewDidLoad];
     
+    self.navigationItem.title = @"IMAGE";
+   
     [self.imageView setImage:self.myTemporaryImage];
 }
 

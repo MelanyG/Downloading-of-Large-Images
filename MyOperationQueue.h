@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 @class DataSourse;
 @class ContentTableView;
-//@class CustomTableViewCell;
+
 
 
 extern NSString* const LoadImagesNotification;
@@ -21,15 +21,11 @@ extern NSString* const LoadImagesNotification;
 @property(nonatomic, getter=isExecuting) BOOL executing;
 @property(nonatomic, getter=isFinished) BOOL finished;
 @property(readonly, getter=isAsynchronous) BOOL asynchronous;
-@property(strong, nonatomic) ContentTableView* tableView;
 
 @property(strong, nonatomic) DataSourse* sourse;
-@property(assign, nonatomic) NSInteger currentCell;
 @property(retain) NSURL *targetURL;
 @property(strong, nonatomic) NSMutableData* imageData;
-@property (nonatomic) float downloadSize;
-@property (strong, nonatomic) NSURLResponse *urlResponse;
-@property (nonatomic) NSUInteger totalBytes;
+
 
 - (id)initWithURL:(NSURL*)url andRaw:(NSInteger)row;
 - (void)cancel;

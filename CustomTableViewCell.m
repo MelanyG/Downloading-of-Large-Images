@@ -12,26 +12,22 @@
 
 - (void)awakeFromNib {
     [super awakeFromNib];
-    // Initialization code
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
     [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
 }
 
 - (IBAction)buttonClicked:(UIButton *)sender;
 {
-
+    
     if (self.delegate && [self.delegate respondsToSelector:@selector(didClickStartAtIndex:withData:)])
     {
         [self.delegate didClickStartAtIndex:self.cellIndex withData:self];
-      
+        
     }
     self.startButton.enabled = NO;
-
 }
 
 
@@ -41,6 +37,6 @@
     {
         [self.delegate didClickStopAtIndex:self.cellIndex withData:self];
     }
- self.startButton.enabled = YES;
+    self.startButton.enabled = YES;
 }
 @end

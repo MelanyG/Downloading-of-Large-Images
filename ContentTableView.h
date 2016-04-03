@@ -17,10 +17,7 @@
 @interface ContentTableView : UITableViewController<CellDelegate, NSURLSessionDataDelegate, NSURLSessionDelegate, NSURLSessionTaskDelegate>
 
 @property(strong, nonatomic) DataSourse* source;
-//@property(strong, nonatomic) NSMutableDictionary* dataDictionary;
-//@property(strong, nonatomic) NSMutableArray* names;
-//@property(strong, nonatomic) NSMutableSet* tagsOfCells;
+
 -(void)updatePage;
-//+ (instancetype)sharedManager;
 
 @end

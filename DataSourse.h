@@ -14,8 +14,6 @@
 @property(strong, nonatomic) NSMutableDictionary* dataDictionary;
 @property(strong, nonatomic) NSMutableArray* names;
 @property(strong, nonatomic) NSMutableSet* tagsOfCells;
-@property(assign, nonatomic) NSInteger experiment;
-@property(strong, nonatomic) NSMutableDictionary* queueRegistration;
 
 + (instancetype)sharedManager;
 

@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 @class DataSourse;
-//@class ContentTableView;
+@class ContentTableView;
 //@class CustomTableViewCell;
 
 
@@ -18,10 +18,10 @@ extern NSString* const LoadImagesNotification;
 @interface MyOperationQueue : NSOperation <NSURLSessionDataDelegate, NSURLSessionDelegate, NSURLSessionTaskDelegate>
 
 @property(assign, nonatomic) BOOL isCancelled;
-@property (nonatomic, readwrite, getter = isExecuting) BOOL isExecuting;
-@property (nonatomic, readwrite, getter = isFinished)  BOOL isFinished;
-@property (nonatomic, readwrite, getter = isAsynchronous)  BOOL isAsynchronous;
-//@property(strong, nonatomic) ContentTableView* tableView;
+@property(nonatomic, getter=isExecuting) BOOL executing;
+@property(nonatomic, getter=isFinished) BOOL finished;
+@property(readonly, getter=isAsynchronous) BOOL asynchronous;
+@property(strong, nonatomic) ContentTableView* tableView;
 
 @property(strong, nonatomic) DataSourse* sourse;
 @property(assign, nonatomic) NSInteger currentCell;

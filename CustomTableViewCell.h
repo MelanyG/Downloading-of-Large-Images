@@ -14,8 +14,6 @@
 @property (weak, nonatomic) IBOutlet UIImageView *image;
 
 @property (weak, nonatomic) IBOutlet UILabel *nameOfImage;
-@property (weak, nonatomic) IBOutlet UIButton *start;
-@property (weak, nonatomic) IBOutlet UIButton *stop;
 @property (weak, nonatomic) IBOutlet UIProgressView *progressView;
 @property (weak, nonatomic) IBOutlet UILabel *realProgressStatus;
 @property (weak, nonatomic) IBOutlet UIButton *startButton;

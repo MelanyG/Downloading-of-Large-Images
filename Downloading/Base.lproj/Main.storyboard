@@ -47,8 +47,9 @@
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TYa-eF-pOQ">
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" reversesTitleShadowWhenHighlighted="YES" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TYa-eF-pOQ">
                                             <rect key="frame" x="116" y="94" width="273" height="30"/>
+                                            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="30" id="MFV-yh-anI"/>
                                             </constraints>
@@ -68,8 +69,9 @@
                                             <color key="textColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2fo-1H-L4o">
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" reversesTitleShadowWhenHighlighted="YES" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2fo-1H-L4o">
                                             <rect key="frame" x="17" y="94" width="91" height="30"/>
+                                            <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="91" id="9Aa-Zr-iNm"/>
                                                 <constraint firstAttribute="height" constant="30" id="cFE-de-UNr"/>
@@ -104,9 +106,7 @@
                                     <outlet property="nameOfImage" destination="yc4-gT-r2a" id="rgR-LP-gnS"/>
                                     <outlet property="progressView" destination="9S6-x7-1fK" id="Gqs-tm-1as"/>
                                     <outlet property="realProgressStatus" destination="eEe-pL-BBg" id="goR-9A-xf2"/>
-                                    <outlet property="start" destination="2fo-1H-L4o" id="DZg-nD-BcC"/>
                                     <outlet property="startButton" destination="2fo-1H-L4o" id="LOb-7e-gJE"/>
-                                    <outlet property="stop" destination="TYa-eF-pOQ" id="3iE-Jb-Xnj"/>
                                     <outlet property="stopButton" destination="TYa-eF-pOQ" id="O3X-0D-vzs"/>
                                     <segue destination="PC8-hh-uY7" kind="showDetail" identifier="ImageVC" action="showViewController:sender:" id="s5X-3n-Imd"/>
                                 </connections>

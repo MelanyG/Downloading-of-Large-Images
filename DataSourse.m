@@ -24,7 +24,7 @@
 - (id) init
 {
     self.dataDictionary = [[NSMutableDictionary alloc]init];
-
+    self.queueRegistration = [[NSMutableDictionary alloc]init];
     self.tagsOfCells = [[NSMutableSet alloc]init];
     self.names = [[NSMutableArray alloc]initWithObjects:@"Snow Tiger", @"Elephant", @"Sunset",@"Nature silence",@"Tree",@"White tiger",@"Waterfall",@"Owl",@"Fairytail",@"End of space",@"House", @"Beautiful Nature",@"Green Waterfall", @"Wooden road", @"Beach", @"Color nature", @"Autumn nature", @"New year", @"Christmas tree", @"Christmas", nil];
     NSArray* urlNames = [[NSArray alloc]initWithObjects:

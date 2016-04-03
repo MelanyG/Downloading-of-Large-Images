@@ -1,4 +1,4 @@
-//
+ //
 //  MyOperationQueue.m
 //  Downloading
 //
@@ -9,50 +9,53 @@
 #import "MyOperationQueue.h"
 //#import "CustomTableViewCell.h"
 #import "DataSourse.h"
+#import "ContentTableView.h"
 
 NSString* const LoadImagesNotification = @"ImagesLoaded";
 
+
+static NSInteger visitedTimes;
+//NSInteger selectedCell;
+//NSMutableArray *currentDownloadings;
+                                      
 @interface MyOperationQueue ()
 
-//@property (strong, nonatomic) NSString* justInCase;
-//@property(strong, nonatomic) CustomTableViewCell* customCell;
 @property(strong, nonatomic) NSURLSession* defaultSession;
 @property (strong, nonatomic) NSURLSessionDownloadTask* downloadTask;
 
 @end
 
 @implementation MyOperationQueue
+@dynamic executing;
+@dynamic finished;
+
 
 - (id)initWithURL:(NSURL*)url andRaw:(NSInteger)row
 {
     if (![super init])
         return nil;
     [self setTargetURL:url];
-    //[self setCurrentCell:row];
-
-    //self.customCell = [[CustomTableViewCell alloc]init];
     self.sourse = [DataSourse sharedManager];
+    self.tableView = [[ContentTableView alloc]init];
     self.defaultSession = [self configureSession];
-    self.isAsynchronous = YES;
-    self.isExecuting = YES;
-        //self.justInCase = self.sourse.names[row];
+
     return self;
 }
 #pragma mark  - Overrides
 
-
 - (BOOL)isExecuting
 {
-     NSLog(@"Exec");
-    return (self.defaultSession != nil);
+    if(self.defaultSession!=nil)
+        return YES;
+    return NO;
 }
 
 - (BOOL)isFinished
 {
-    NSLog(@"Finished");
-    return (self.defaultSession == nil);
+    if(self.defaultSession==nil)
+        return YES;
+    return NO;
 }
-
 - (BOOL)isAsynchronous
 {
     return YES;
@@ -60,23 +63,18 @@ NSString* const LoadImagesNotification = @"ImagesLoaded";
 
 #pragma mark  - Main & Utility Methods
 
-- (void)main
+- (void)start
 {
+    [self willChangeValueForKey:@"isExecuting"];
+   
     if ([self isCancelled])
         return;
-    [self willChangeValueForKey:@"isExecuting"];
-    //self.isExecuting = YES;
-   
-    [self didChangeValueForKey:@"isExecuting"];
-
-    
     
     self.downloadTask = [self.defaultSession downloadTaskWithURL:self.targetURL];
     NSLog(@"I suppose that this queue also download this image");
-    
+     [self didChangeValueForKey:@"isExecuting"];
     if ([self isCancelled])  return;
-    
-    //[self performSelectorOnMainThread:@selector(updateButton) withObject:nil waitUntilDone:NO];
+
     [ self.downloadTask  resume];
     NSLog(@"Operation finished");
 
@@ -87,31 +85,30 @@ NSString* const LoadImagesNotification = @"ImagesLoaded";
     [self willChangeValueForKey:@"isExecuting"];
     [self willChangeValueForKey:@"isFinished"];
     self.defaultSession = nil;
+    self.downloadTask = nil;
     [self didChangeValueForKey:@"isFinished"];
     [self didChangeValueForKey:@"isExecuting"];
+     NSLog(@"operationfinished.");
     
-    NSLog(@"operationfinished.");
 }
 
 - (void)cancel
 {
     [super cancel];
-    [self willChangeValueForKey:@"isExecuting"];
-    [self willChangeValueForKey:@"isFinished"];
-    self.isExecuting = NO;
-    self.isFinished  = YES;
-    [self didChangeValueForKey:@"isFinished"];
-    [self didChangeValueForKey:@"isExecuting"];
 
     if(self.downloadTask.state == NSURLSessionTaskStateRunning)
-        [self.downloadTask cancel];
+    [self.downloadTask cancel];
     [self finish];
      NSLog(@"** operation cancelled **");
 }
 
 - (void)updateButton
 {
-    NSLog(@"Visited New York");
+    [[NSNotificationCenter defaultCenter] postNotificationName:LoadImagesNotification
+                                                        object:nil
+                                                      userInfo:nil];
+    //[self.tableView updatePage];
+   // NSLog(@"Visited New York");
     
 }
 
@@ -119,18 +116,13 @@ NSString* const LoadImagesNotification = @"ImagesLoaded";
 
 - (NSURLSession *) configureSession
 {
-    NSLog(@"configureSession in Queue");
     NSURLSessionConfiguration *config =
-    [NSURLSessionConfiguration backgroundSessionConfigurationWithIdentifier:@"com.my.backgroundDownload"];
+    [NSURLSessionConfiguration ephemeralSessionConfiguration];
     config.sessionSendsLaunchEvents = YES;
     config.discretionary = YES;
-    //    NSURLSessionConfiguration *config =
-    //    [NSURLSessionConfiguration defaultSessionConfiguration];
-    //config.allowsCellularAccess = NO;
-    
+   
     NSURLSession *session = [NSURLSession sessionWithConfiguration:config delegate:self delegateQueue:nil];
     
-    //[[self.dataDictionary objectForKey:self.names[self.selectedCell]] setCurrentQueue:one];
     return session;
 }
 
@@ -140,7 +132,7 @@ NSString* const LoadImagesNotification = @"ImagesLoaded";
 totalBytesWritten:(int64_t)totalBytesWritten
 totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
 {
-    self.downloadTask = downloadTask;
+        self.downloadTask = downloadTask;
     if([self isCancelled])
     {
         [self cancel];
@@ -150,16 +142,17 @@ totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
         float progress = (float) (totalBytesWritten/1024) / (float) (totalBytesExpectedToWrite/1024);
         if ([self isCancelled])
         {
-            NSLog(@"** operation cancelled **");
-            return;
+         return;
         }
         //self.customCell.progressView.progress = progress;
         //self.customCell.realProgressStatus.text = [NSString stringWithFormat:@"%0.f%%", progress*100];
-    [[self.sourse.dataDictionary objectForKey:self.sourse.names[self.currentCell]] setRealProgressViewStatus:[NSString stringWithFormat:@"%0.f%%", progress*100]];
-    [[self.sourse.dataDictionary objectForKey:self.sourse.names[self.currentCell]] setProgressData:progress];
-    [[NSNotificationCenter defaultCenter] postNotificationName:LoadImagesNotification
-                                                        object:nil
-                                                      userInfo:nil];
+    NSInteger selectedCell = [[self.sourse.queueRegistration objectForKey:[NSString stringWithFormat:@"%p", self]]intValue];
+    [[self.sourse.dataDictionary objectForKey:self.sourse.names[selectedCell]] setRealProgressViewStatus:[NSString stringWithFormat:@"%0.f%%", progress*100]];
+    [[self.sourse.dataDictionary objectForKey:self.sourse.names[selectedCell]] setProgressData:progress];
+    [self performSelectorOnMainThread:@selector(updateButton) withObject:nil waitUntilDone:NO];
+//    [[NSNotificationCenter defaultCenter] postNotificationName:LoadImagesNotification
+//                                                        object:nil
+//                                                      userInfo:nil];
         // NSLog(@"downloaded %d%%", (int)(100.0*prog));
    // });
 }
@@ -168,13 +161,23 @@ totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
      downloadTask:(NSURLSessionDownloadTask *)downloadTask
 didFinishDownloadingToURL:(NSURL *)location
 {
+    if(visitedTimes == 1)
+    {
+        [self cancel];
+        NSLog(@"Visited = %ld",(long)visitedTimes);
+        //NSLog(@"SelectedCell = %ld",(long)selectedCell);
+         NSLog(@"SelectedCell = %@", self.name);
+        visitedTimes = 0;
+        [self main];
+    }
+
        self.downloadTask = downloadTask;
     if([self isCancelled])
     {
         [self cancel];
         return;
     }
-    
+    NSInteger selectedCell = [[self.sourse.queueRegistration objectForKey:[NSString stringWithFormat:@"%p", self]]intValue];
     NSLog(@"didFinishDownloadingToURL - Queue");
     NSData *d = [NSData dataWithContentsOfURL:location];
     UIImage *im = [UIImage imageWithData:d];
@@ -184,17 +187,19 @@ didFinishDownloadingToURL:(NSURL *)location
       //  self.customCell.realProgressStatus.text = @"Downloaded";
         //[self.tableView.tableView reloadData];
     //});
-    [[self.sourse.dataDictionary objectForKey:self.sourse.names[self.currentCell]] setDownloadedImage:im];
-    [[self.sourse.dataDictionary objectForKey:self.sourse.names[self.currentCell]] setRealProgressViewStatus:@"Downloaded"];
-    [[self.sourse.dataDictionary objectForKey:self.sourse.names[self.currentCell]] setProgressData:1.f];
+    [[self.sourse.dataDictionary objectForKey:self.sourse.names[selectedCell]] setDownloadedImage:im];
+    [[self.sourse.dataDictionary objectForKey:self.sourse.names[selectedCell]] setRealProgressViewStatus:@"Downloaded"];
+    [[self.sourse.dataDictionary objectForKey:self.sourse.names[selectedCell]] setProgressData:1.f];
     //[self.savedImages setObject:im forKey:self.customCell.nameOfImage.text];
-    NSNumber *myNum = [NSNumber numberWithInteger:self.currentCell];
+    NSNumber *myNum = [NSNumber numberWithInteger:selectedCell];
     [self.sourse.tagsOfCells addObject:myNum];
     //[[self.sourse.dataDictionary objectForKey:self.sourse.names[self.currentCell]]setCustomCell:self.customCell];
-    [[NSNotificationCenter defaultCenter] postNotificationName:LoadImagesNotification
-                                                        object:nil
-                                                      userInfo:nil];
-    [self finish];
+    [self performSelectorOnMainThread:@selector(updateButton) withObject:nil waitUntilDone:NO];
+//    [[NSNotificationCenter defaultCenter] postNotificationName:LoadImagesNotification
+//                                                        object:nil
+//                                                      userInfo:nil];
+    //self.defaultSession.delegateQueue = nil;
+   [self finish];
 }
 
 
@@ -258,5 +263,6 @@ didCompleteWithError:(NSError *)error
         [self cancel];
     }
 }
+
 
 @end
